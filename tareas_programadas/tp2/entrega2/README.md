@@ -1,0 +1,1 @@
+# Aclaración: en la carpeta de src se encuentra el ordenador.h. Mientras que el pdf con el informe de la entrega se encuentra en esta misma carpeta, ignorar lo demás, ya que es lo que utilizo para hacer las pruebas y demás cosas
