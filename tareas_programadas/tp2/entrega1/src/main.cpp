@@ -1,53 +1,104 @@
-#include "Ordenador.h"
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <chrono>
+#include "llist.h"
+
 using namespace std;
-using namespace std::chrono;
+using namespace chrono;
 
-void generarArregloAleatorio(int *arr, int n) {
-	srand(time(0)); // Semilla para la generación de números aleatorios
-	for (int i = 0; i < n; i++) {
-		arr[i] = rand() % 1000000 - 500000; // Números aleatorios entre -500000 y 499999
-	}
-}
-
-// Main privado
 int main() {
-  Ordenador* ordenador = new class Ordenador();
-  
-  // Aquí puedes probar tus algoritmos si lo deseas
-  const int tamanios[] = {50000, 100000, 150000, 200000}; // Tamaños de los arreglos
-  const int repeticiones = 5; // Número de repeticiones por tamaño de arreglo
+    const int n = 1000000;
+    const int e = 10000;
+    const int range = 2 * n;
 
-  for (int tam : tamanios) {
-    cout << "Tamaño del arreglo: " << tam << endl;
-    // Variables para medir el tiempo
-    double tiempoTotal = 0;
-    // Ejecutar cada algoritmo al menos tres veces
-    for (int i = 0; i < repeticiones; i++) {
-      // Crear el arreglo
-      int *arr = new int[tam];
-      // Generar el arreglo aleatorio
-      generarArregloAleatorio(arr, tam);
-      // Medir el tiempo antes de ejecutar el algoritmo
-      auto inicio = high_resolution_clock::now();
-      // Ejecutar el algoritmo de selección
-      ordenador->mergesort(arr, tam);
-      // Medir el tiempo después de ejecutar el algoritmo
-      auto fin = high_resolution_clock::now();
-      // Calcular la duración en milisegundos
-      double duracion = duration_cast<milliseconds>(fin - inicio).count();
-      // for (int i = 0; i < tam; ++i) {
-      //     cout << arr[i] << " ";
-      // }
-      // cout << endl;
-      cout << "Tiempo duracion: " << duracion << endl;
-      // Acumular el tiempo total
-      tiempoTotal += duracion;
-      // Liberar memoria del arreglo copiado
-      delete[] arr;
+    // Variables para registrar los tiempos
+    double time_insert_random[3] = {0};
+    // double time_search_random[3] = {0};
+    double time_insert_ordered[3] = {0};
+    // double time_search_ordered[3] = {0};
+
+    // Repetir el experimento tres veces
+    for (int run = 0; run < 3; run++) {
+        // Inserción Aleatoria
+        // llist<int> random_list;
+        // srand(time(0));
+
+        // // Medir el tiempo de inserción aleatoria
+        // auto start = high_resolution_clock::now();
+        // for (int i = 0; i < n; i++) {
+        //     int key = rand() % range;
+        //     llnode<int>* newNode = new llnode<int>(key);
+        //     random_list.Insert(newNode);
+        // }
+        // // auto end = high_resolution_clock::now();
+        // // time_insert_random[run] = duration_cast<milliseconds>(end - start).count();
+
+        // // // Medir el tiempo de búsqueda aleatoria
+        // // start = high_resolution_clock::now();
+        // for (int i = 0; i < e; i++) {
+        //     int key = rand() % range;
+        //     random_list.Search(key);
+        // }
+        // auto end = high_resolution_clock::now();
+        // // time_insert_random[run] = duration_cast<milliseconds>(end - start).count();
+        // time_insert_random[run] = duration_cast<milliseconds>(end - start).count();
+
+        // Inserción Ordenada
+        llist<int> ordered_list;
+
+        // Medir el tiempo de inserción ordenada
+        auto start = high_resolution_clock::now();
+        for (int i = 0; i < n; i++) {
+            llnode<int>* newNode = new llnode<int>(i);
+            ordered_list.Insert(newNode);
+        }
+        // end = high_resolution_clock::now();
+        // time_insert_ordered[run] = duration_cast<milliseconds>(end - start).count();
+
+        // // Medir el tiempo de búsqueda ordenada
+        // start = high_resolution_clock::now();
+        for (int i = 0; i < e; i++) {
+            int key = rand() % range;
+            ordered_list.Search(key);
+        }
+        auto end = high_resolution_clock::now();
+        // time_search_ordered[run] = duration_cast<milliseconds>(end - start).count();
+        time_insert_ordered[run] = duration_cast<milliseconds>(end - start).count();
     }
-    // Calcular el tiempo promedio de ejecución
-    double tiempoPromedio = tiempoTotal / repeticiones;
-    cout << "Tiempo promedio de ejecución del algoritmo de selección: " << tiempoPromedio << " milisegundos" << endl;
-    cout << endl;
-  }
+
+    // Calcular los promedios
+    double avg_insert_random = (time_insert_random[0] + time_insert_random[1] + time_insert_random[2]) / 3;
+    // double avg_search_random = (time_search_random[0] + time_search_random[1] + time_search_random[2]) / 3;
+    double avg_insert_ordered = (time_insert_ordered[0] + time_insert_ordered[1] + time_insert_ordered[2]) / 3;
+    // double avg_search_ordered = (time_search_ordered[0] + time_search_ordered[1] + time_search_ordered[2]) / 3;
+
+    // Mostrar los resultados
+    cout << "Resultados de inserción y búsqueda en listas enlazadas:" << endl;
+
+    cout << "Inserción/Busqueda Aleatoria:" << endl;
+    cout << "Corrida 1: " << time_insert_random[0] << " ms" << endl;
+    cout << "Corrida 2: " << time_insert_random[1] << " ms" << endl;
+    cout << "Corrida 3: " << time_insert_random[2] << " ms" << endl;
+    cout << "Promedio: " << avg_insert_random << " ms" << endl;
+
+    // cout << "Búsqueda Aleatoria:" << endl;
+    // cout << "Corrida 1: " << time_search_random[0] << " ms" << endl;
+    // cout << "Corrida 2: " << time_search_random[1] << " ms" << endl;
+    // cout << "Corrida 3: " << time_search_random[2] << " ms" << endl;
+    // cout << "Promedio: " << avg_search_random << " ms" << endl;
+
+    cout << "Inserción/Busqueda Ordenada:" << endl;
+    cout << "Corrida 1: " << time_insert_ordered[0] << " ms" << endl;
+    cout << "Corrida 2: " << time_insert_ordered[1] << " ms" << endl;
+    cout << "Corrida 3: " << time_insert_ordered[2] << " ms" << endl;
+    cout << "Promedio: " << avg_insert_ordered << " ms" << endl;
+
+    // cout << "Búsqueda Ordenada:" << endl;
+    // cout << "Corrida 1: " << time_search_ordered[0] << " ms" << endl;
+    // cout << "Corrida 2: " << time_search_ordered[1] << " ms" << endl;
+    // cout << "Corrida 3: " << time_search_ordered[2] << " ms" << endl;
+    // cout << "Promedio: " << avg_search_ordered << " ms" << endl;
+
+    return 0;
 }
