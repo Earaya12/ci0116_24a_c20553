@@ -29,21 +29,15 @@ public:
         return this->key;
     }
 
-    llnode<T>* getPrev() const {
-        return this->prev;
-    }
-
     llnode<T>* getNext() const {
         return this->next;
     }
-
+    
     // Métodos de modificación (setters).
     void setKey(const T& k){
         this->key = k;
     }
-    void setPrev(llnode<T>* p){
-        this->prev = p;
-    }
+
     void setNext(llnode<T>* n){
         this->next = n;
     }
@@ -91,7 +85,7 @@ public:
             x= x->getNext();
         }
         if(x == this->nil){
-            return nil;
+            return this->nil;
         } else {
             return x;
         }
@@ -102,13 +96,15 @@ public:
         // x->getPrev()->setNext(x->getNext());
         // x->getNext()->setPrev(x->getPrev());
         // delete x;
-        llnode<T>* current = nil;
-        while (current->getNext() != x && current->getNext() != nil) {
+        llnode<T>* current = this->nil;
+        while (current->getNext() != x && current->getNext() != this->nil) {
             current = current->getNext();
         }
         if (current->getNext() == x) {
             current->setNext(x->getNext());
             delete x;
+        } else {
+            std::cout << "El nodo que intentas eliminar no está en la lista." << std::endl;
         }
     };    
 };
