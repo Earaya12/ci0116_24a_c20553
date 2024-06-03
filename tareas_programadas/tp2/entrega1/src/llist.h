@@ -5,6 +5,8 @@
 #ifndef llist_h
 #define llist_h
 
+#include <string>
+
 /// @brief Nodos de la lista enlazada.
 /// @tparam T Tipo de dato de la llave almacenada en el nodo.
 template <typename T>
@@ -58,10 +60,10 @@ template <typename T>
 class llist {
 private:
     llnode<T>* nil; ///< Nodo centinela.
-    
+
     /// @brief Retorna informacion de estudiante
-    string ImprimirDatosDeTarea() {
-        return "c20553 Tarea 1 Etapa 1";
+    std::string ImprimirDatosDeTarea() {
+        return "c20553 Tarea 2 Etapa 1";
     }
 public:
     /// @brief Constructor por omisión (crea una lista vacía).

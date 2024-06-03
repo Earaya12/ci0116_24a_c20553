@@ -3,6 +3,7 @@
 #include <ctime>
 #include <chrono>
 #include "bstree.h"
+#include <string>
 
 using namespace std;
 using namespace chrono;

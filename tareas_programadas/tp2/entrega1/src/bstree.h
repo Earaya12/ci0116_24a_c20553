@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <vector>
+#include <string>
 
 /**
  * @brief Nodos del árbol binario de búsqueda.
@@ -124,8 +125,8 @@ private:
     }
 
     /// @brief Retorna informacion de estudiante
-    string ImprimirDatosDeTarea() {
-        return "c20553 Tarea 1 Etapa 1";
+    std::string ImprimirDatosDeTarea() {
+        return "c20553 Tarea 2 Etapa 1";
     }
 
 public:
