@@ -58,7 +58,11 @@ template <typename T>
 class llist {
 private:
     llnode<T>* nil; ///< Nodo centinela.
-
+    
+    /// @brief Retorna informacion de estudiante
+    string ImprimirDatosDeTarea() {
+        return "c20553 Tarea 1 Etapa 1";
+    }
 public:
     /// @brief Constructor por omisión (crea una lista vacía).
     llist() {

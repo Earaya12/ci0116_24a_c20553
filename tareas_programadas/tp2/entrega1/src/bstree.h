@@ -99,20 +99,33 @@ private:
      * @return bstnode<T>* Nodo raíz del árbol balanceado.
      */
     bstnode<T>* buildBalancedTree(const std::vector<T>& claves, int inicio, int fin) {
+        // Verifica si el índice de inicio es mayor que el índice de fin, lo que indica un rango vacío.
         if (inicio > fin) {
-            return nullptr;
+            return nullptr; // Si es así, devuelve un puntero nulo.
         }
+        // Calcula el índice medio del rango actual.
         int mid = inicio + (fin - inicio) / 2;
+        // Crea un nuevo nodo con la clave en la posición media del rango.
         bstnode<T>* nodo = new bstnode<T>(claves[mid]);
+        // Construye recursivamente el subárbol izquierdo con las claves antes de la posición media.
         nodo->setLeft(buildBalancedTree(claves, inicio, mid - 1));
+        // Establece el padre del hijo izquierdo si este no es nulo.
         if (nodo->getLeft() != nullptr) {
             nodo->getLeft()->setParent(nodo);
         }
+        // Construye recursivamente el subárbol derecho con las claves después de la posición media.
         nodo->setRight(buildBalancedTree(claves, mid + 1, fin));
+        // Establece el padre del hijo derecho si este no es nulo.
         if (nodo->getRight() != nullptr) {
             nodo->getRight()->setParent(nodo);
         }
+        // Devuelve el nodo raíz del subárbol construido.
         return nodo;
+    }
+
+    /// @brief Retorna informacion de estudiante
+    string ImprimirDatosDeTarea() {
+        return "c20553 Tarea 1 Etapa 1";
     }
 
 public:
