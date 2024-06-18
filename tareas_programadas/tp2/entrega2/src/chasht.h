@@ -5,6 +5,7 @@
 #ifndef chtable_h
 #define chtable_h
 
+#include "llist.h"
 #include <list>
 #include <vector>
 
@@ -27,7 +28,6 @@ public:
     // Retorna un puntero a la llave o nullptr si no se encuentra
     T* Search(const T& k) {
     };
-    
     
 private:
     // Número de entradas en la tabla

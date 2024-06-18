@@ -1,53 +1,41 @@
-#include "Ordenador.h"
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <chrono>
+#include "llist.h"
+#include "rbtree.h"
+#include "chasht.h"
+
 using namespace std;
-using namespace std::chrono;
+using namespace chrono;
 
-void generarArregloAleatorio(int *arr, int n) {
-	srand(time(0)); // Semilla para la generación de números aleatorios
-	for (int i = 0; i < n; i++) {
-		arr[i] = rand() % 1000000 - 500000; // Números aleatorios entre -500000 y 499999
-	}
-}
-
-// Main privado
 int main() {
-  Ordenador* ordenador = new class Ordenador();
-  
-  // Aquí puedes probar tus algoritmos si lo deseas
-  const int tamanios[] = {50000, 100000, 150000, 200000}; // Tamaños de los arreglos
-  const int repeticiones = 5; // Número de repeticiones por tamaño de arreglo
+    rbtree<int> tree;
 
-  for (int tam : tamanios) {
-    cout << "Tamaño del arreglo: " << tam << endl;
-    // Variables para medir el tiempo
-    double tiempoTotal = 0;
-    // Ejecutar cada algoritmo al menos tres veces
-    for (int i = 0; i < repeticiones; i++) {
-      // Crear el arreglo
-      int *arr = new int[tam];
-      // Generar el arreglo aleatorio
-      generarArregloAleatorio(arr, tam);
-      // Medir el tiempo antes de ejecutar el algoritmo
-      auto inicio = high_resolution_clock::now();
-      // Ejecutar el algoritmo de selección
-      ordenador->mergesort(arr, tam);
-      // Medir el tiempo después de ejecutar el algoritmo
-      auto fin = high_resolution_clock::now();
-      // Calcular la duración en milisegundos
-      double duracion = duration_cast<milliseconds>(fin - inicio).count();
-      // for (int i = 0; i < tam; ++i) {
-      //     cout << arr[i] << " ";
-      // }
-      // cout << endl;
-      cout << "Tiempo duracion: " << duracion << endl;
-      // Acumular el tiempo total
-      tiempoTotal += duracion;
-      // Liberar memoria del arreglo copiado
-      delete[] arr;
+    rbtnode<int>* node1 = new rbtnode<int>(10);
+    rbtnode<int>* node2 = new rbtnode<int>(20);
+    rbtnode<int>* node3 = new rbtnode<int>(30);
+    rbtnode<int>* node4 = new rbtnode<int>(15);
+
+    tree.Insert(node1);
+    tree.Insert(node2);
+    tree.Insert(node3);
+    tree.Insert(node4);
+
+    std::cout << "Elementos del árbol después de las inserciones:" << std::endl;
+    tree.InorderWalk(tree.getRoot()); // Usamos la raíz del árbol para el recorrido
+
+    rbtnode<int>* searchNode = tree.Search(tree.getRoot(), 20); // Pasamos la raíz y la clave a buscar
+    if (searchNode != tree.getNil()) {
+        std::cout << "Nodo con llave 20 encontrado." << std::endl;
+    } else {
+        std::cout << "Nodo con llave 20 no encontrado." << std::endl;
     }
-    // Calcular el tiempo promedio de ejecución
-    double tiempoPromedio = tiempoTotal / repeticiones;
-    cout << "Tiempo promedio de ejecución del algoritmo de selección: " << tiempoPromedio << " milisegundos" << endl;
-    cout << endl;
-  }
+
+    tree.Delete(node2);
+
+    std::cout << "Elementos del árbol después de eliminar el nodo con llave 20:" << std::endl;
+    tree.InorderWalk(tree.getRoot()); // Usamos la raíz del árbol para el recorrido
+
+    return 0;
 }

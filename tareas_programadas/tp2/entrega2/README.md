@@ -1,1 +1,1 @@
-# Aclaración: en la carpeta de src se encuentra el ordenador.h. Mientras que el pdf con el informe de la entrega se encuentra en esta misma carpeta, ignorar lo demás, ya que es lo que utilizo para hacer las pruebas y demás cosas
+# Aclaración: en la carpeta de src se encuentran los .h solicitados para esta entrega. Mientras que el pdf con el informe de la entrega se encuentra en esta misma carpeta, ignorar lo demás, ya que es lo que utilizo para hacer las pruebas y demás cosas

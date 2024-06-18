@@ -2,11 +2,12 @@
 #include <cstdlib>
 #include <ctime>
 #include <chrono>
+#include "llist.h"
 #include "bstree.h"
-#include <string>
 
 using namespace std;
 using namespace chrono;
+
 
 int main() {
     const int n = 1000000;
@@ -20,17 +21,17 @@ int main() {
     double time_search_ordered[3] = {0};
 
     // Repetir el experimento tres veces
-    for (int run = 0; run < 3; run++) {
+    for (int run = 0; run < 1; run++) {
         // Inserción Aleatoria
-        bstree<int> random_tree;
+        llist<int> random_list;
         srand(time(0));
 
         // Medir el tiempo de inserción aleatoria
         auto start = high_resolution_clock::now();
         for (int i = 0; i < n; i++) {
             int key = rand() % range;
-            bstnode<int>* newNode = new bstnode<int>(key);
-            random_tree.Insert(newNode);
+            llnode<int>* newNode = new llnode<int>(key);
+            random_list.Insert(newNode);
         }
         auto end = high_resolution_clock::now();
         time_insert_random[run] = duration_cast<milliseconds>(end - start).count();
@@ -39,26 +40,29 @@ int main() {
         start = high_resolution_clock::now();
         for (int i = 0; i < e; i++) {
             int key = rand() % range;
-            random_tree.IterativeSearch(random_tree.getRoot(), key);
+            random_list.Search(key);
         }
         end = high_resolution_clock::now();
         time_search_random[run] = duration_cast<milliseconds>(end - start).count();
 
 
         // Inserción Ordenada
-        bstree<int> ordered_tree;
+        llist<int> ordered_list;
 
         // Medir el tiempo de inserción ordenada
         start = high_resolution_clock::now();
-        ordered_tree.createBalancedTree(n);
+        for (int i = 0; i < n; i++) {
+            llnode<int>* newNode = new llnode<int>(i);
+            ordered_list.Insert(newNode);
+        }
         end = high_resolution_clock::now();
         time_insert_ordered[run] = duration_cast<milliseconds>(end - start).count();
 
-        // Medir el tiempo de búsqueda ordenada
+        // // Medir el tiempo de búsqueda ordenada
         start = high_resolution_clock::now();
         for (int i = 0; i < e; i++) {
             int key = rand() % range;
-            ordered_tree.IterativeSearch(ordered_tree.getRoot(), key);
+            ordered_list.Search(key);
         }
         end = high_resolution_clock::now();
         time_search_ordered[run] = duration_cast<milliseconds>(end - start).count();
@@ -71,9 +75,9 @@ int main() {
     double avg_search_ordered = (time_search_ordered[0] + time_search_ordered[1] + time_search_ordered[2]) / 3;
 
     // Mostrar los resultados
-    cout << "Resultados de inserción y búsqueda en árboles de búsqueda binaria:" << endl;
+    cout << "Resultados de inserción y búsqueda en listas enlazadas:" << endl;
 
-    cout << "Inserción/Busqueda Aleatoria:" << endl;
+    cout << "Inserción Aleatoria:" << endl;
     cout << "Corrida 1: " << time_insert_random[0] << " ms" << endl;
     cout << "Corrida 2: " << time_insert_random[1] << " ms" << endl;
     cout << "Corrida 3: " << time_insert_random[2] << " ms" << endl;
@@ -85,7 +89,7 @@ int main() {
     cout << "Corrida 3: " << time_search_random[2] << " ms" << endl;
     cout << "Promedio: " << avg_search_random << " ms" << endl;
 
-    cout << "Inserción/Busqueda Ordenada:" << endl;
+    cout << "Inserción Ordenada:" << endl;
     cout << "Corrida 1: " << time_insert_ordered[0] << " ms" << endl;
     cout << "Corrida 2: " << time_insert_ordered[1] << " ms" << endl;
     cout << "Corrida 3: " << time_insert_ordered[2] << " ms" << endl;
@@ -98,8 +102,4 @@ int main() {
     cout << "Promedio: " << avg_search_ordered << " ms" << endl;
 
     return 0;
-}
-
-
-
-
+} 
