@@ -10,32 +10,94 @@ using namespace std;
 using namespace chrono;
 
 int main() {
-    rbtree<int> tree;
+    const int n = 1000000;
+    const int e = 10000;
+    const int range = 2 * n;
 
-    rbtnode<int>* node1 = new rbtnode<int>(10);
-    rbtnode<int>* node2 = new rbtnode<int>(20);
-    rbtnode<int>* node3 = new rbtnode<int>(30);
-    rbtnode<int>* node4 = new rbtnode<int>(15);
+    // Variables para registrar los tiempos
+    double time_insert_random[3] = {0};
+    double time_search_random[3] = {0};
+    double time_insert_ordered[3] = {0};
+    double time_search_ordered[3] = {0};
 
-    tree.Insert(node1);
-    tree.Insert(node2);
-    tree.Insert(node3);
-    tree.Insert(node4);
+    // Repetir el experimento tres veces
+    for (int run = 0; run < 3; run++) {
+        // Inserción Aleatoria
+        chtable<int> random_table(n);  // Crear una tabla hash con tamaño n
+        srand(time(0));
 
-    std::cout << "Elementos del árbol después de las inserciones:" << std::endl;
-    tree.InorderWalk(tree.getRoot()); // Usamos la raíz del árbol para el recorrido
+        // Medir el tiempo de inserción aleatoria
+        auto start = high_resolution_clock::now();
+        for (int i = 0; i < n; i++) {
+            int key = rand() % range;
+            random_table.Insert(key);
+        }
+        auto end = high_resolution_clock::now();
+        time_insert_random[run] = duration_cast<milliseconds>(end - start).count();
 
-    rbtnode<int>* searchNode = tree.Search(tree.getRoot(), 20); // Pasamos la raíz y la clave a buscar
-    if (searchNode != tree.getNil()) {
-        std::cout << "Nodo con llave 20 encontrado." << std::endl;
-    } else {
-        std::cout << "Nodo con llave 20 no encontrado." << std::endl;
+        // Medir el tiempo de búsqueda aleatoria
+        start = high_resolution_clock::now();
+        for (int i = 0; i < e; i++) {
+            int key = rand() % range;
+            random_table.Search(key);
+        }
+        end = high_resolution_clock::now();
+        time_search_random[run] = duration_cast<milliseconds>(end - start).count();
+
+
+        // Inserción Ordenada
+        chtable<int> ordered_table(n);  // Crear una tabla hash con tamaño n
+
+        // Medir el tiempo de inserción ordenada
+        start = high_resolution_clock::now();
+        for (int i = 0; i < n; i++) {
+            ordered_table.Insert(i);
+        }
+        end = high_resolution_clock::now();
+        time_insert_ordered[run] = duration_cast<milliseconds>(end - start).count();
+
+        // Medir el tiempo de búsqueda ordenada
+        start = high_resolution_clock::now();
+        for (int i = 0; i < e; i++) {
+            int key = rand() % range;
+            ordered_table.Search(key);
+        }
+        end = high_resolution_clock::now();
+        time_search_ordered[run] = duration_cast<milliseconds>(end - start).count();
     }
 
-    tree.Delete(node2);
+    // Calcular los promedios
+    double avg_insert_random = (time_insert_random[0] + time_insert_random[1] + time_insert_random[2]) / 3;
+    double avg_search_random = (time_search_random[0] + time_search_random[1] + time_search_random[2]) / 3;
+    double avg_insert_ordered = (time_insert_ordered[0] + time_insert_ordered[1] + time_insert_ordered[2]) / 3;
+    double avg_search_ordered = (time_search_ordered[0] + time_search_ordered[1] + time_search_ordered[2]) / 3;
 
-    std::cout << "Elementos del árbol después de eliminar el nodo con llave 20:" << std::endl;
-    tree.InorderWalk(tree.getRoot()); // Usamos la raíz del árbol para el recorrido
+    // Mostrar los resultados usando printf
+    printf("Resultados de inserción y búsqueda en tablas hash:\n\n");
+
+    printf("Inserción/Busqueda Aleatoria:\n");
+    printf("Corrida 1: %.2f ms\n", time_insert_random[0]);
+    printf("Corrida 2: %.2f ms\n", time_insert_random[1]);
+    printf("Corrida 3: %.2f ms\n", time_insert_random[2]);
+    printf("Promedio: %.2f ms\n\n", avg_insert_random);
+
+    printf("Búsqueda Aleatoria:\n");
+    printf("Corrida 1: %.2f ms\n", time_search_random[0]);
+    printf("Corrida 2: %.2f ms\n", time_search_random[1]);
+    printf("Corrida 3: %.2f ms\n", time_search_random[2]);
+    printf("Promedio: %.2f ms\n\n", avg_search_random);
+
+    printf("Inserción/Busqueda Ordenada:\n");
+    printf("Corrida 1: %.2f ms\n", time_insert_ordered[0]);
+    printf("Corrida 2: %.2f ms\n", time_insert_ordered[1]);
+    printf("Corrida 3: %.2f ms\n", time_insert_ordered[2]);
+    printf("Promedio: %.2f ms\n\n", avg_insert_ordered);
+
+    printf("Búsqueda Ordenada:\n");
+    printf("Corrida 1: %.2f ms\n", time_search_ordered[0]);
+    printf("Corrida 2: %.2f ms\n", time_search_ordered[1]);
+    printf("Corrida 3: %.2f ms\n", time_search_ordered[2]);
+    printf("Promedio: %.2f ms\n\n", avg_search_ordered);
 
     return 0;
 }

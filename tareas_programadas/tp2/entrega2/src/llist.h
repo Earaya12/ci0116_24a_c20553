@@ -31,7 +31,7 @@ public:
 
     /// @brief Obtiene la llave del nodo.
     /// @return Llave del nodo.
-    T getKey() const {
+    T& getKey() {
         return this->key;
     }
 
